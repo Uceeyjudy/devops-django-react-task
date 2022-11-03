@@ -12,4 +12,4 @@ sudo docker images
 
 # Step 3: 
 # Run flask app
-sudo docker run -p 3000:3000 devops-api
+sudo docker run -p 8000:8000 devops-api
