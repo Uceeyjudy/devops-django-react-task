@@ -3,35 +3,31 @@ version: '3.8'
 
 services:
 
-  nginx:
-    depends_on:
-      - api
-      - frontend
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
-    ports:
-      - "3000:80"
-
   api:
-    build:
-      dockerfile: Dockerfile
-      context: "./server"
+    build: ./api
+    container_name: api_c
+    ports: 
+      - '8000:8000'
     volumes:
-      - /app/node_modules
-      - ./server:/app
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - ./api:/app
 
   frontend:
-    stdin_open: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    build:
-      dockerfile: Dockerfile
-      context: ./frontend
+    build: ./frontend
+    container_name: frontend_c
+    ports: 
+      - '3000:3000'
     volumes:
-      - /app/node_modules
       - ./frontend:/app
+    stdin_open: true
+    tty: true
 
+#  nginx:
+#    depends_on:
+#      - api
+#      - frontend
+#    restart: always
+#    build:
+#      dockerfile: Dockerfile
+#      context: ./nginx
+#    ports:
+#      - "3000:80"
