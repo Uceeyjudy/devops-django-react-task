@@ -1,27 +1,20 @@
-# pull the official base image
-FROM python:3.8.3-alpine
-
-# setup environment variable  
-ENV DockerHOME=/home/app/webapp  
-
-# set work directory  
-RUN mkdir -p $DockerHOME  
-
-# where your code lives  
-WORKDIR $DockerHOME  
-
-# set environment variables  
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1  
-
-# install dependencies  
-RUN pip install --upgrade pip  
-
-# copy whole project to your docker home directory. 
-COPY . $DockerHOME  
-# run this command to install all dependencies  
-RUN pip install -r requirements.txt  
-# port where the Django app runs  
-EXPOSE 8000  
-# start server  
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# The image you are going to inherit your Dockerfile from
+FROM python:3.7-alpine
+# Necessary, so Docker doesn't buffer the output and that you can see the output 
+# of your application (e.g., Django logs) in real-time.
+ENV PYTHONUNBUFFERED 1
+# Make a directory in your Docker image, which you can use to store your source code
+RUN mkdir /api
+# Set the /django_recipe_api directory as the working directory
+WORKDIR /api
+# Copies from your local machine's current directory to the django_recipe_api folder 
+# in the Docker image
+COPY . .
+# Copy the requirements.txt file adjacent to the Dockerfile 
+# to your Docker image
+COPY ./requirements.txt /requirements.txt
+# Install the requirements.txt file in Docker image
+RUN pip install -r /requirements.txt
+# Create a user that can run your container
+RUN adduser -D user
+USER user
