@@ -1,15 +1,8 @@
-FROM node:13.12.0-alpine
-
-WORKDIR /app/frontend
-
-COPY package.json .
-
+FROM node:19-alpine3.15
+WORKDIR /frontend
+COPY package*.json ./
 RUN npm install
-
-RUN npm install react-scripts@3.4.1 -g 
-
 COPY . .
-
+RUN npm run build
 EXPOSE 3000
-
-CMD ["npm", "start", "build"]
+CMD ["npx", "serve", "build"]
