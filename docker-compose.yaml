@@ -1,34 +1,21 @@
-version: '3.8'
-
+version: "3"
 
 services:
+    frontend:
+        image: judithezenwosu/frontend:latest
+        container_name: frontendpage
+        ports:
+          - 3000:3000
+        depends_on:
+          - backend
 
-  api:
-    build: ./api
-    container_name: api_c
-    ports: 
-      - '8000:8000'
-    volumes:
-      - ./api:/app
-    command: sh -c "python manage.py runserver 0.0.0.0:8000"
-
-  frontend:
-    build: ./frontend
-    container_name: frontend_c
-    ports: 
-      - '3000:3000'
-    volumes:
-      - ./frontend:/app
-    stdin_open: true
-    tty: true
-
-#  nginx:
-#    depends_on:
-#      - api
-#      - frontend
-#    restart: always
-#    build:
-#      dockerfile: Dockerfile
-#      context: ./nginx
-#    ports:
-#      - "3000:80"
+    backend:
+        image: judithezenwosu/api:latest
+        container_name: backend
+        command: python manage.py runserver 0.0.0.0:8000
+        ports:
+            - "8000:8000"
+networks:
+  default:
+  name:
+  external:
